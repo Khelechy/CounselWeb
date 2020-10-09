@@ -18,9 +18,9 @@ namespace CounselWeb.Services
 			_context = context;
 		}
 
-		public async void AcceptRequest(int id, int adminId)
+		public void AcceptRequest(int id, int adminId)
 		{
-			var request = await _context.Requests.FirstOrDefaultAsync(r => r.Id == id);
+			var request = _context.Requests.FirstOrDefault(r => r.Id == id);
 			request.Status = Models.Enums.Status.Active;
 			request.AdminId = adminId;
 

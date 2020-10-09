@@ -3,15 +3,17 @@ using System;
 using CounselWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CounselWeb.Migrations
 {
     [DbContext(typeof(CounselContext))]
-    partial class CounselContextModelSnapshot : ModelSnapshot
+    [Migration("20201009152055_issuesList")]
+    partial class issuesList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

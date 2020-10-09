@@ -35,6 +35,39 @@ namespace CounselWeb.Data
 					Password = "admin123"
 				}
 			);
+
+			modelBuilder.Entity<Issue>().HasData(
+				new Issue
+				{
+					Id = 1,
+					Name = "Smoking"
+				},
+				new Issue
+				{
+					Id = 2,
+					Name = "Career and course choices"
+				},
+				new Issue
+				{
+					Id = 3,
+					Name = "Project choice"
+				},
+				new Issue
+				{
+					Id = 4,
+					Name = "Depression and suicidal thoughts"
+				},
+				new Issue
+				{
+					Id = 5,
+					Name = "Constant failing of courses"
+				},
+				new Issue
+				{
+					Id = 6,
+					Name = "Prostitution"
+				}
+			);
 		}
 	}
 }
