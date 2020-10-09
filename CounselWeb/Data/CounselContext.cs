@@ -20,5 +20,21 @@ namespace CounselWeb.Data
 		public DbSet<Issue> Issues { set; get; }
 
 		public DbSet<Message> Messages { set; get; }
+
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<User>().HasData(
+				new User
+				{
+					Id = 1,
+					FirstName = "Admin",
+					LastName = "SuperAdmin",
+					Email = "admin@counsel.com",
+					IsAdmin = true,
+					Password = "admin123"
+				}
+			);
+		}
 	}
 }
