@@ -27,8 +27,11 @@ namespace CounselWeb
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddDbContext<CounselContext>(option => option.UseSqlServer
-			   (Configuration.GetConnectionString("CounselConnection")));
+			//services.AddDbContext<CounselContext>(option => option.UseSqlServer
+			//   (Configuration.GetConnectionString("CounselConnection")));
+
+			services.AddDbContext<CounselContext>(option => option.UseNpgsql
+			(Configuration.GetConnectionString("CounselConnection")));
 
 			services.AddControllersWithViews();
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
