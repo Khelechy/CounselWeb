@@ -33,6 +33,7 @@ namespace CounselWeb.Controllers
 		public IActionResult Index()
 		{
 			var sessionUserId = this.HttpContext.Session.GetString("userid");
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
 			if (string.IsNullOrEmpty(sessionUserId))
 			{
 				return RedirectToAction(nameof(Login));
@@ -95,6 +96,7 @@ namespace CounselWeb.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Messages(int Id)
 		{
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
 			int uid = int.Parse(HttpContext.Session.GetString("userid"));
 			int rId = Id;
 			var messageItems = await _messageService.GetMessages(rId);
@@ -107,6 +109,7 @@ namespace CounselWeb.Controllers
 		[HttpPost]
 		public IActionResult SendMessage(string messageBody, int requestId)
 		{
+			var name = this.HttpContext.Session.GetString("user_name");
 			try
 			{
 				if (ModelState.IsValid)
@@ -114,7 +117,7 @@ namespace CounselWeb.Controllers
 					var requestBody = new Message
 					{
 						RequestId = requestId,
-						MessageBody = messageBody,
+						MessageBody = name + ": "  +messageBody,
 						created_at = DateTime.Now
 						
 					};
@@ -158,6 +161,7 @@ namespace CounselWeb.Controllers
 					if (user != null)
 					{
 						HttpContext.Session.SetString("userid", user.Id.ToString());
+						HttpContext.Session.SetString("user_name", user.FirstName + " " + user.LastName);
 						if (user.IsAdmin == true)
 						{
 							return RedirectToAction("Index", "Admins");

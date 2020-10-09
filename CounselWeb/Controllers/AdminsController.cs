@@ -78,7 +78,7 @@ namespace CounselWeb.Controllers
 					var requestBody = new Message
 					{
 						RequestId = requestId,
-						MessageBody = messageBody,
+						MessageBody = "Admin: " + messageBody,
 						created_at = DateTime.Now
 
 					};
