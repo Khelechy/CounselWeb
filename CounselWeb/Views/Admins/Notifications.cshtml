@@ -1,13 +1,12 @@
-﻿@model RequestModel
+﻿@model IEnumerable<Notification>
 @{
     Layout = null;
 }
-
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>User Panel</title>
+    <title>Admin Panel</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -29,38 +28,43 @@
             -->
             <div class="logo">
                 <a href="#" class="simple-text logo-normal">
-                    User Dashboard
+                    Notifications
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="nav-item active  ">
-                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Index">
                             <i class="material-icons">dashboard</i>
-                            <p>Make Request</p>
+                            <p>Dashboard</p>
                         </a>
                     </li>
-
+                    <li class="nav-item  ">
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Users">
+                            <i class="material-icons">person</i>
+                            <p>Users</p>
+                        </a>
+                    </li>
                     <li class="nav-item ">
-                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Requests" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Requests">
                             <i class="material-icons">content_paste</i>
                             <p>Counsel Requests</p>
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Profile" aria-haspopup="true" aria-expanded="false">
-                            <i class="material-icons">person</i>
-                            <p>Profile</p>
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Active" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">content_paste</i>
+                            <p>My Active Requests</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
-                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Notifications" aria-haspopup="true" aria-expanded="false">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Notifications" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">notifications</i>
-                            <p>Notifications(@ViewBag.ncount)</p>
+                            <p>Notifications(@Model.Where(x => x.IsRead == false).Count())</p>
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" asp-controller="Users" asp-action="Logout">
+                        <a class="nav-link" asp-controller="Admins" asp-action="Logout">
                             <i class="material-icons">work_off</i>
                             <p>Log Out</p>
                         </a>
@@ -74,7 +78,7 @@
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="javascript:;">Dashboard</a>
+                        <a class="navbar-brand" href="javascript:;">Notifications</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle navigation</span>
@@ -82,10 +86,7 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
-                    <div class="collapse navbar-collapse justify-content-end">
-                            <b>User: @ViewBag.name</b>
-                            <!-- your navbar here -->
-                    </div>
+                    
                 </div>
             </nav>
             <!-- End Navbar -->
@@ -93,35 +94,22 @@
                 <div class="container-fluid">
                     <!-- your content here -->
                     <div class="row">
-
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">Create a Request</h4>
-
+                                    <h4 class="card-title ">Notification Table</h4>
+                                    <p class="card-category">Watch your newly arrived messages</p>
                                 </div>
-                                <div class="tab-content">
-                                    <div class="card-body table-responsive">
-                                        <div class="col-md-12">
-                                            <form asp-action="MakeRequest" asp-controller="Users">
-                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                <div class="form-group">
-                                                    <label asp-for="Issues" class="control-label">Select from existing problems</label>
-                                                    <select asp-for="Issues" class="form-control" asp-items="ViewBag.IssuesID">
-                                                        <option value="">-- Select Problem --</option>
-                                                    </select>
-                                                    <span asp-validation-for="Issues" class="text-danger" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label asp-for="Problem" class="control-label bmd-label-floating">Dicuss Problem in one word</label>
-                                                    <input asp-for="Problem" class="form-control" placeholder="e.g Addiction, Cheating, Smoking" />
-                                                    <span asp-validation-for="Problem" class="text-danger"></span>
-                                                </div>
-                                                <div class="form-group">
-                                                    <input type="submit" value="Create" class="btn btn-primary" />
-                                                </div>
-                                            </form>
-                                        </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+
+                                        @foreach (var n in Model)
+                                        {
+                                            <div class="card">
+                                                <b>@n.SenderName: </b>sent a message at @n.created_at
+                                            </div>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +119,7 @@
                     <!--End Body content-->
                 </div>
             </div>
-            
+
         </div>
     </div>
     <!--   Core JS Files   -->
@@ -356,3 +344,26 @@
 </body>
 
 </html>
+
+@*<h2>All Reservations</h2>
+    <a asp-action="AddReservation" class="btn btn-sm btn-primary">Add Reservation</a>
+    <a asp-action="GetReservation" class="btn btn-sm btn-secondary">Get Reservation</a>
+
+    <table class="table table-sm table-striped table-bordered m-2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.Id</td>
+                    <td>@r.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>*@

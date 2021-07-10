@@ -26,6 +26,12 @@ namespace CounselWeb.Services
 
 		}
 
+		public void CompleteRequest(int id)
+		{
+			var request = _context.Requests.FirstOrDefault(r => r.Id == id);
+			request.Status = Models.Enums.Status.Completed;
+		}
+
 		public async void CreateRequest(Request request)
 		{
 

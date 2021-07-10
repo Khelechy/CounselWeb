@@ -11,7 +11,11 @@ namespace CounselWeb.Services
 		bool SaveChanges();
 		Task<IEnumerable<User>> GetAllUsers();
 		Task<User> GetUserById(int id);
+		void ChangePassword(int id, string oldPassword, string newPassword);
 		void CreateUser(User user);
+		void SetAllRead(int userId);
+		Task<IEnumerable<Notification>> GetNotifications(int userId);
+		Task<int> GetNotificationsCount(int userId);
 
 		Task<User> Login(string email, string password);
 	}

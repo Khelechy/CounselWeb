@@ -20,6 +20,7 @@ namespace CounselWeb.Data
 		public DbSet<Issue> Issues { set; get; }
 
 		public DbSet<Message> Messages { set; get; }
+		public DbSet<Notification> Notifications { set; get; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

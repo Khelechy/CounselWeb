@@ -30,14 +30,18 @@ namespace CounselWeb.Controllers
 			_mapper = mapper;
 			_context = context;
 		}
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			var sessionUserId = this.HttpContext.Session.GetString("userid");
-			ViewBag.name = this.HttpContext.Session.GetString("user_name");
 			if (string.IsNullOrEmpty(sessionUserId))
 			{
 				return RedirectToAction(nameof(Login));
 			}
+			var uid = int.Parse(sessionUserId);
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
+			var notificationsCount = await _userService.GetNotificationsCount(uid);
+			ViewBag.ncount = notificationsCount;
+			
 			PopulateIssuesDropDownList();
 			return View();
 		}
@@ -88,8 +92,51 @@ namespace CounselWeb.Controllers
 		public async Task<ActionResult> Requests()
 		{
 			int uid = int.Parse(HttpContext.Session.GetString("userid"));
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
+			var notificationsCount = await _userService.GetNotificationsCount(uid);
+			ViewBag.ncount = notificationsCount;
 			var requestItems = await _requestService.GetUserRequest(uid);
 			return View(requestItems);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> Profile()
+		{
+			int uid = int.Parse(HttpContext.Session.GetString("userid"));
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
+			var notificationsCount = await _userService.GetNotificationsCount(uid);
+			ViewBag.ncount = notificationsCount;
+			var user = await _userService.GetUserById(uid);
+			var userModel = new UserViewModel
+			{
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				Department = user.Department,
+				MatricNo = user.MatricNo
+			};
+			return View(userModel);
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> Notifications()
+		{
+			int uid = int.Parse(HttpContext.Session.GetString("userid"));
+			ViewBag.name = this.HttpContext.Session.GetString("user_name");
+			_userService.SetAllRead(uid);
+			var notifications = await _userService.GetNotifications(uid);
+			return View(notifications);
+		}
+
+		[HttpPost]
+		public ActionResult ChangePassword(UserViewModel model)
+		{
+			int uid = int.Parse(HttpContext.Session.GetString("userid"));
+			_userService.ChangePassword(uid, model.OldPassword, model.NewPassword);
+			var isChanged = _userService.SaveChanges();
+			if (isChanged != true)
+				return BadRequest(new { message = "could not change password" });
+			return RedirectToAction(nameof(Profile));
 		}
 
 
@@ -99,6 +146,8 @@ namespace CounselWeb.Controllers
 			ViewBag.name = this.HttpContext.Session.GetString("user_name");
 			int uid = int.Parse(HttpContext.Session.GetString("userid"));
 			int rId = Id;
+			var notificationsCount = await _userService.GetNotificationsCount(uid);
+			ViewBag.ncount = notificationsCount;
 			var messageItems = await _messageService.GetMessages(rId);
 			ViewBag.reqId = rId;
 
@@ -107,9 +156,12 @@ namespace CounselWeb.Controllers
 
 
 		[HttpPost]
-		public IActionResult SendMessage(string messageBody, int requestId)
+		public async Task<IActionResult> SendMessage(string messageBody, int requestId)
 		{
 			var name = this.HttpContext.Session.GetString("user_name");
+			var request = await _requestService.GetRequestById(requestId);
+			var rid = request.AdminId;
+
 			try
 			{
 				if (ModelState.IsValid)
@@ -117,12 +169,21 @@ namespace CounselWeb.Controllers
 					var requestBody = new Message
 					{
 						RequestId = requestId,
-						MessageBody = name + ": "  +messageBody,
+						SenderName = name,
+						MessageBody = messageBody,
 						created_at = DateTime.Now
 						
 					};
 
 					_messageService.SendMessage(requestBody);
+					var notify = new Notification
+					{
+						RequestId = requestId,
+						SenderName = name,
+						created_at = DateTime.Now,
+						RId = rid
+					};
+					_messageService.AddNotification(notify);
 					var isRequested = _messageService.SaveChanges();
 					if (isRequested != true)
 						Console.WriteLine("Not sent");
@@ -174,6 +235,7 @@ namespace CounselWeb.Controllers
 					}
 					else
 					{
+						TempData["Error"] = "Incorrect Email/Password";
 						return RedirectToAction(nameof(Login));
 					}
 				}
@@ -229,6 +291,12 @@ namespace CounselWeb.Controllers
 			}
 			//var registerModel = _mapper.Map<User>(registerDto);
 			return View();
+		}
+
+		public IActionResult Logout()
+		{
+			HttpContext.Session.Clear();
+			return RedirectToAction(nameof(Login));
 		}
 
 

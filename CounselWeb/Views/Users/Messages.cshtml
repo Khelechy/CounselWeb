@@ -48,7 +48,19 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Profile" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">person</i>
+                            <p>Profile</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Notifications" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">notifications</i>
+                            <p>Notifications(@ViewBag.ncount)</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" asp-controller="Users" asp-action="Logout">
                             <i class="material-icons">work_off</i>
                             <p>Log Out</p>
                         </a>
@@ -71,10 +83,8 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end">
-                        <ul class="navbar-nav">
-                            <b>User: @ViewBag.name</b>
-                            <!-- your navbar here -->
-                        </ul>
+                        <b>User: @ViewBag.name</b>
+                        <!-- your navbar here -->
                     </div>
                 </div>
             </nav>
@@ -90,8 +100,8 @@
                                 <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header card-header-primary">
-                                            <h4 class="card-title ">Request Table</h4>
-                                            <p class="card-category"> Your Requests and status</p>
+                                            <h4 class="card-title ">Conversation History</h4>
+                                           
                                         </div>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -107,7 +117,7 @@
                                                         {
                                                             <tr>
 
-                                                                <td>@r.MessageBody</td>
+                                                                <td><b>@r.SenderName: </b>@r.MessageBody</td>
                                                             </tr>
                                                         }
                                                     </tbody>
@@ -127,8 +137,8 @@
                                 <ul class="list-group chat__main">
                                 </ul>
                             </div>
-                            <div class="chat__type__body">
-                                <div class="chat__type">
+                            <div class="card-body table-responsive">
+                                <div class="col-md-12">
                                     @*<textarea id="msg_box" placeholder="Type your message"></textarea>
                                         <form method="post">
                                             <button asp-action="SendMessage" type="submit" class="btn btn-info btn-rounded btn-sm waves-effect waves-light">Send</button>
@@ -155,27 +165,7 @@
                     <!--End Body content-->
                 </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav class="float-left">
-                        <ul>
-                            <li>
-                                <a href="https://www.creative-tim.com">
-                                    Creative Tim
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright float-right">
-                        &copy;
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script>, made with <i class="material-icons">favorite</i> by
-                        <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
-                    </div>
-                    <!-- your footer here -->
-                </div>
-            </footer>
+            
         </div>
     </div>
     <!--   Core JS Files   -->
@@ -393,12 +383,12 @@
     <script>
 
         var myInput = document.getElementById("messagebody");
-            window.setInterval('refresh()', 10000); 
+            window.setInterval('refresh()', 5000); 
       	// Call a function every 10000 milliseconds (OR 10 seconds).
 
         // Refresh or reload page.
         function refresh() {
-            if (myInput.value.length === 0) {
+            if (myInput.value.length === 0 || myInput === document.activeElement) {
                 window.location.reload();
             }
         }

@@ -1,4 +1,4 @@
-﻿@model RequestModel
+﻿@model UserViewModel
 @{
     Layout = null;
 }
@@ -29,12 +29,12 @@
             -->
             <div class="logo">
                 <a href="#" class="simple-text logo-normal">
-                    User Dashboard
+                    User Profile
                 </a>
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="nav-item active  ">
+                    <li class="nav-item ">
                         <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
                             <i class="material-icons">dashboard</i>
                             <p>Make Request</p>
@@ -47,7 +47,7 @@
                             <p>Counsel Requests</p>
                         </a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item active  ">
                         <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Profile" aria-haspopup="true" aria-expanded="false">
                             <i class="material-icons">person</i>
                             <p>Profile</p>
@@ -74,7 +74,7 @@
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="javascript:;">Dashboard</a>
+                        <a class="navbar-brand" href="javascript:;">Profile</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle navigation</span>
@@ -83,8 +83,8 @@
                         <span class="navbar-toggler-icon icon-bar"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end">
-                            <b>User: @ViewBag.name</b>
-                            <!-- your navbar here -->
+                        <b>User: @ViewBag.name</b>
+                        <!-- your navbar here -->
                     </div>
                 </div>
             </nav>
@@ -97,28 +97,54 @@
                         <div class="col-lg-6 col-md-12">
                             <div class="card">
                                 <div class="card-header card-header-primary">
-                                    <h4 class="card-title ">Create a Request</h4>
+                                    <h4 class="card-title ">User Profile Details</h4>
 
                                 </div>
+                                <div class="card-body table-responsive">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label asp-for="FirstName" class="control-label bmd-label-floating">First Name</label>
+                                            <input asp-for="FirstName" class="form-control" placeholder="@Model.FirstName" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="LastName" class="control-label bmd-label-floating">Last Name</label>
+                                            <input asp-for="LastName" class="form-control" placeholder="@Model.LastName" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="control-label bmd-label-floating">Email</label>
+                                            <input asp-for="Email" class="form-control" placeholder="@Model.Email" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="MatricNo" class="control-label bmd-label-floating">Matric No</label>
+                                            <input asp-for="MatricNo" class="form-control" placeholder="@Model.MatricNo" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Department" class="control-label bmd-label-floating">Department</label>
+                                            <input asp-for="Department" class="form-control" placeholder="@Model.Department" disabled />
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="tab-content">
+                                    <div class="card-header card-header-primary">
+                                        <h4 class="card-title ">Change Password</h4>
+
+                                    </div>
                                     <div class="card-body table-responsive">
                                         <div class="col-md-12">
-                                            <form asp-action="MakeRequest" asp-controller="Users">
+                                            <form asp-action="ChangePassword" asp-controller="Users">
                                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                                 <div class="form-group">
-                                                    <label asp-for="Issues" class="control-label">Select from existing problems</label>
-                                                    <select asp-for="Issues" class="form-control" asp-items="ViewBag.IssuesID">
-                                                        <option value="">-- Select Problem --</option>
-                                                    </select>
-                                                    <span asp-validation-for="Issues" class="text-danger" />
+                                                    <label asp-for="OldPassword" class="control-label bmd-label-floating">Old Password</label>
+                                                    <input asp-for="OldPassword" type="password" class="form-control" placeholder="Old Password" />
+                                                    <span asp-validation-for="OldPassword" class="text-danger"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label asp-for="Problem" class="control-label bmd-label-floating">Dicuss Problem in one word</label>
-                                                    <input asp-for="Problem" class="form-control" placeholder="e.g Addiction, Cheating, Smoking" />
-                                                    <span asp-validation-for="Problem" class="text-danger"></span>
+                                                    <label asp-for="NewPassword" class="control-label bmd-label-floating">New Password</label>
+                                                    <input asp-for="NewPassword" type="password" class="form-control" placeholder="New Password" />
+                                                    <span asp-validation-for="NewPassword" class="text-danger"></span>
                                                 </div>
                                                 <div class="form-group">
-                                                    <input type="submit" value="Create" class="btn btn-primary" />
+                                                    <input type="submit" value="Change Password" class="btn btn-primary" />
                                                 </div>
                                             </form>
                                         </div>
@@ -131,7 +157,7 @@
                     <!--End Body content-->
                 </div>
             </div>
-            
+           
         </div>
     </div>
     <!--   Core JS Files   -->

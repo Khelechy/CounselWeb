@@ -12,6 +12,7 @@ namespace CounselWeb.Services
 		Task<IEnumerable<Message>> GetMessages(int requestId);
 
 		void SendMessage(Message message);
+		void AddNotification(Notification notification);
 	}
 
 }

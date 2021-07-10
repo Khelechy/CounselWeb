@@ -35,5 +35,15 @@ namespace CounselWeb.Services
 		{
 			return (_context.SaveChanges() >= 0);
 		}
+
+		public async void AddNotification(Notification notification)
+		{
+			if (notification == null)
+			{
+				throw new ArgumentNullException(nameof(notification));
+			}
+
+			await _context.Notifications.AddAsync(notification);
+		}
 	}
 }

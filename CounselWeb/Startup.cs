@@ -30,7 +30,7 @@ namespace CounselWeb
 			//services.AddDbContext<CounselContext>(option => option.UseSqlServer
 			//   (Configuration.GetConnectionString("CounselConnection")));
 
-			services.AddDbContext<CounselContext>(option => option.UseNpgsql
+			services.AddDbContext<CounselContext>(option => option.UseSqlServer
 			(Configuration.GetConnectionString("CounselConnection")));
 
 			services.AddControllersWithViews();

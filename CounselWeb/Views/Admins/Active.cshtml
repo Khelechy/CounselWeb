@@ -58,6 +58,12 @@
                         </a>
                     </li>
                     <li class="nav-item ">
+                        <a class="nav-link" asp-area="" asp-controller="Admins" asp-action="Notifications" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">notifications</i>
+                            <p>Notifications(@ViewBag.ncount)</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
                         <a class="nav-link" href="#">
                             <i class="material-icons">work_off</i>
                             <p>Log Out</p>
@@ -154,7 +160,7 @@
                                                         <td>@r.Problem</td>
                                                         <td>@r.Status</td>
                                                         <td>
-                                                            <a asp-action="Messages" asp-route-id="@r.Id">Message Counsellor</a>
+                                                            <a asp-action="Messages" asp-route-id="@r.Id">Message Student</a>
                                                         </td>
                                                     </tr>
                                                 }
@@ -169,27 +175,6 @@
                     <!--End Body content-->
                 </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <nav class="float-left">
-                        <ul>
-                            <li>
-                                <a href="https://www.creative-tim.com">
-                                    Creative Tim
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                    <div class="copyright float-right">
-                        &copy;
-                        <script>
-                            document.write(new Date().getFullYear())
-                        </script>, made with <i class="material-icons">favorite</i> by
-                        <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
-                    </div>
-                    <!-- your footer here -->
-                </div>
-            </footer>
         </div>
     </div>
     <!--   Core JS Files   -->

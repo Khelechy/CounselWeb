@@ -17,6 +17,7 @@ namespace CounselWeb.Services
 		Task<IEnumerable<Request>> GetAdminRequests(int id);
 
 		void AcceptRequest(int id, int adminId);
+		void CompleteRequest(int id);
 		void CreateRequest(Request request);
 	}
 }

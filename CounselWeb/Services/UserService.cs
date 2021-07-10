@@ -17,6 +17,16 @@ namespace CounselWeb.Services
 			_context = context;
 		}
 
+
+		public async void ChangePassword(int id, string oldPassword, string newPassword)
+		{
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			if(user.Password == oldPassword)
+			{
+				user.Password = newPassword;
+			}
+		}
+
 		public async void CreateUser(User user)
 		{
 			if (user == null)
@@ -29,6 +39,26 @@ namespace CounselWeb.Services
 		public async Task<IEnumerable<User>> GetAllUsers()
 		{
 			return await _context.Users.ToListAsync();
+		}
+
+		public async Task<IEnumerable<Notification>> GetNotifications(int userId)
+		{
+			return await _context.Notifications.Where(x => x.RId == userId).ToListAsync();
+		}
+
+		public async Task<int> GetNotificationsCount(int userId)
+		{
+			return await _context.Notifications.Where(x => x.RId == userId && x.IsRead == false).CountAsync();
+		}
+
+		public void SetAllRead(int userId)
+		{
+			var notify = _context.Notifications.Where(x => x.RId == userId && x.IsRead == false);
+			foreach(var n in notify)
+			{
+				n.IsRead = true;
+			}
+			_context.SaveChanges();
 		}
 
 		public async Task<User> GetUserById(int id)
@@ -51,5 +81,7 @@ namespace CounselWeb.Services
 		{
 			return ( _context.SaveChanges() >= 0);
 		}
+
+		
 	}
 }

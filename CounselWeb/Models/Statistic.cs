@@ -9,5 +9,7 @@ namespace CounselWeb.Models
 	{
 		public int TotalUsers { get; set; }
 		public int TotalRequest { get; set; }
+		public int TotalPending { get; set; }
+		public int TotalCompleted{ get; set; }
 	}
 }
